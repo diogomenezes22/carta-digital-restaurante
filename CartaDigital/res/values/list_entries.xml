@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+     <string-array name="entrantes">
+        <item>Pan de ajo</item>
+        <item>Queso</item>
+        <item>Jamon</item>
+        <item>Pate</item>
+        <item>Croquetas</item>
+        <item>Revuelto</item>
+        <item>Panboli</item>
+    </string-array>
+    <string-array name="carnes">
+        <item>Solomillo</item>
+        <item>Entrecot</item>
+        <item>Filete de pollo</item>
+        <item>Buey</item>
+        <item>Conejo</item>
+        <item>Choto</item>
+        <item>Perdiz</item>
+        <item>Rabo de toro</item>
+        <item>Saltimboca</item>
+        <item>Escaloppine</item>
+        <item>Pollo asado</item>
+        <item>Lomo en manteca</item>
+    </string-array>
+</resources>
