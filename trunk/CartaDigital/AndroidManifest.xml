@@ -26,10 +26,6 @@
             android:name="com.menu.menus.ListaActivity"
             android:label="@string/title_activity_lista" >
         </activity>
-        <activity
-            android:name="com.menu.menus.ServiceActivity"
-            android:label="@string/title_activity_service" >
-        </activity>
     </application>
 	
 </manifest>
