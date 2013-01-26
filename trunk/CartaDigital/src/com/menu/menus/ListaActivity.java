@@ -42,8 +42,6 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
 public class ListaActivity extends Activity {
 
 	private static final String accionSoap = "ServicioWeb/titulo";
@@ -51,26 +49,25 @@ public class ListaActivity extends Activity {
 	private static final String namespace = "ServicioWeb";
 	private static final String url = "http://10.0.2.2:51511/WebService1.asmx";
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lista);
-		
+
 		AsyncCallWS task = new AsyncCallWS();
 		task.execute();
-		
+
 	}
 
 	public void titulo(int idCategoria) {
 
 		String accionSoap = "ServicioWeb/titulo";
 		String Metodo = "titulo";
-		
-		String s="textView"+idCategoria;
-		int id=getResources().getIdentifier(s, "id", getPackageName());
-		Log.e("//*", id+"");
-		
+
+		String s = "textView" + idCategoria;
+		int id = getResources().getIdentifier(s, "id", getPackageName());
+		Log.e("//*", id + "");
+
 		try {
 
 			final TextView text = (TextView) findViewById(id);
@@ -108,42 +105,46 @@ public class ListaActivity extends Activity {
 			});
 
 		} catch (XmlPullParserException e) {
-
+			// TODO Auto-generated catch block	
 			Log.e("alberto", e.getMessage());
 
 		}
 
 		catch (IOException e) {
 			// TODO Auto-generated catch block
-			// e.printStackTrace();
-			Log.e("alberto", e.toString());
+			Log.e("alberto", e.getMessage());
 		}
 
 	}
 
-	public void manejadorPedido(View v){
-		
-		LinearLayout fila=(LinearLayout)v.getParent();
-		TextView nombre=(TextView)fila.getChildAt(0);
-		Toast t=Toast.makeText(v.getContext(), nombre.getText(), Toast.LENGTH_SHORT);
+	//
+	public void manejadorPedido(View v) {
+
+		LinearLayout fila = (LinearLayout) v.getParent();
+		TextView nombre = (TextView) fila.getChildAt(0);
+		Toast t = Toast.makeText(v.getContext(), nombre.getText(),
+				Toast.LENGTH_SHORT);
 		t.show();
-		
+
 	}
 
-	
 	public void lista(int idCategoria) {
 
+		//Namespace del web service y metodo a consultar
 		String accionSoap = "ServicioWeb/lista";
 		String Metodo = "lista";
-		String s="listView"+idCategoria;
+		//Construir el id de la vista de lista con el idCategoria pasada como paramentro
+		String s = "listView" + idCategoria;
+		// Con idCategoria=1 , se carga en la listView1, los datos de categoria=1
+		int id = getResources().getIdentifier(s, "id", getPackageName());
 
-		int id=getResources().getIdentifier(s, "id", getPackageName());
-		Log.e("//*", id+"");
 		try {
+			// Obtenemos la vista de la lista apropiada
 			final ListView list = (ListView) findViewById(id);
 
-			// Modelo el request
+			// Modelo de la petición al Web Service
 			SoapObject request = new SoapObject(namespace, Metodo);
+			// Parámetro pasado al método del Web Service
 			request.addProperty("categoria", idCategoria);
 
 			// Modelo el Sobre
@@ -155,48 +156,42 @@ public class ListaActivity extends Activity {
 			// Modelo el transporte
 			HttpTransportSE transporte = new HttpTransportSE(url);
 
-			// Llamada
+			// Llamada al Web Service
 			transporte.call(accionSoap, sobre);
 
-			// Resultado
+			// Resultado de la funcion del WebService
 			SoapObject data = (SoapObject) sobre.getResponse();
-			final String[][] valores = new String[data.getPropertyCount()][];
-			for (int i = 0; i < data.getPropertyCount(); i++) {
-				
-				SoapObject sdd=(SoapObject)data.getProperty(i);
 
-				valores[i]=new String[sdd.getPropertyCount()];
-				
-				for (int j = 0; j < sdd.getPropertyCount(); j++) {
-					
-					valores[i][j] = sdd.getProperty(j).toString();
-				
-				}
-			
-			}
-
+			//Lista de maps que contendran los valores mostrados en cada fila de la lista
 			List<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
-			
-			for(int i=0;i<valores.length;i++)
-			{
-				
+			for (int i = 0; i < data.getPropertyCount(); i++) {
+
+				SoapObject sdd = (SoapObject) data.getProperty(i);
+
 				HashMap<String, String> map = new HashMap<String, String>();
-				map.put("Nombre", valores[i][0]);
-				map.put("Precio", valores[i][1]+"\u20AC");
+				for (int j = 0; j < sdd.getPropertyCount(); j++) {
+
+					if (j == 0) {
+						map.put("Nombre", sdd.getProperty(j).toString());
+					} else {
+						map.put("Precio", sdd.getProperty(j).toString()
+								+ "\u20AC");
+					}
+				}
+
 				mylist.add(map);
-				
 			}
 
-			final SimpleAdapter mSchedule = new SimpleAdapter(this, mylist, R.layout.fila,
-			            new String[] {"Nombre", "Precio"}, new int[] { R.id.column1, R.id.column2});
-			
+			final SimpleAdapter mSchedule = new SimpleAdapter(this, mylist,
+					R.layout.fila, new String[] { "Nombre", "Precio" },
+					new int[] { R.id.column1, R.id.column2 });
 
 			this.runOnUiThread(new Runnable() {
 
 				@Override
 				public void run() {
-					list.setAdapter(mSchedule);		
-						
+					list.setAdapter(mSchedule);
+
 				}
 			});
 
@@ -215,7 +210,6 @@ public class ListaActivity extends Activity {
 			// e.printStackTrace();
 			Log.e("alberto", e.toString());
 		}
-	
 
 	}
 
@@ -226,13 +220,13 @@ public class ListaActivity extends Activity {
 		@Override
 		protected Void doInBackground(Void... params) {
 			Log.i(TAG, "doInBackground");
-			
+
 			titulo(1);
 			lista(1);
-			
+
 			titulo(2);
 			lista(2);
-				
+
 			return null;
 
 		}
