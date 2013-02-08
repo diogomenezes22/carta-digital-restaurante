@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 //import org.postgresql.Driver;
 //CONEXION POR POSTGREST !!! 
+//La base de datos es igual que ela de CartaDigital
 
 public class MainActivity extends Activity {
 
