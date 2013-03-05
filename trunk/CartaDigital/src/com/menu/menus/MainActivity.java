@@ -1,10 +1,13 @@
 package com.menu.menus;
 
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -14,11 +17,13 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		
-		Intent intent=new Intent(MainActivity.this, ListaActivity.class);
+//		Intent intent=new Intent(MainActivity.this, ListaActivity.class);
+//		Intent intent=new Intent(MainActivity.this, ScreenSlideActivity.class);
+//		this.startActivity(intent);
+		
+		Intent intent=new Intent(MainActivity.this, ScreenSlideActivity.class);
 		this.startActivity(intent);
-	
 	}
 
 	@Override
