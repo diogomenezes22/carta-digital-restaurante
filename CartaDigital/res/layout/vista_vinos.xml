@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutVinos"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/Carne"
+                android:gravity="right" >
+
+                <TextView
+                    android:id="@+id/tituloVinos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="7dp"
+                    android:textSize="45sp" />
+
+                <ImageView
+                    android:id="@+id/imagenVinos"
+                    android:layout_width="90dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/tinto" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/listaVinos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/Beige"
+                android:divider="@color/Carne"
+                android:dividerHeight="1dp" >
+            </ListView>
+        </LinearLayout>

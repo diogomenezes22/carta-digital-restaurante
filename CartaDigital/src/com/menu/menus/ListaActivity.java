@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -13,11 +14,7 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
-
-import com.viewpagerindicator.PageIndicator;
-
 import android.support.v13.*;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -33,6 +30,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -47,31 +45,24 @@ public class ListaActivity extends Activity {
 	private static final String accionSoap = "ServicioWeb/titulo";
 	private static final String Metodo = "titulo";
 	private static final String namespace = "ServicioWeb";
-	private static final String url = "http://10.0.2.2:51511/WebService1.asmx";
+	private static final String url = "http://192.168.1.35:8080/WebService1.asmx";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_lista);
+		// setContentView(R.layout.activity_lista);
 
-		AsyncCallWS task = new AsyncCallWS();
-		task.execute();
+		// AsyncCallWS task = new AsyncCallWS();
+		// task.execute();
 
 	}
 
-	public void titulo(int idCategoria) {
+	public String titulo(int idCategoria) {
 
 		String accionSoap = "ServicioWeb/titulo";
 		String Metodo = "titulo";
-
-		String s = "textView" + idCategoria;
-		int id = getResources().getIdentifier(s, "id", getPackageName());
-		Log.e("//*", id + "");
-
+		String categoria = null;
 		try {
-
-			final TextView text = (TextView) findViewById(id);
-			final String valores;
 
 			// Modelo el request
 			SoapObject request = new SoapObject(namespace, Metodo);
@@ -92,20 +83,10 @@ public class ListaActivity extends Activity {
 			// Resultado
 			SoapPrimitive resultado = (SoapPrimitive) sobre.getResponse();
 
-			valores = resultado.toString();
-
-			this.runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-
-					text.setText(valores);
-
-				}
-			});
+			categoria = resultado.toString();
 
 		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block	
+			// TODO Auto-generated catch block
 			Log.e("alberto", e.getMessage());
 
 		}
@@ -115,37 +96,47 @@ public class ListaActivity extends Activity {
 			Log.e("alberto", e.getMessage());
 		}
 
-	}
-
-	//
-	public void manejadorPedido(View v) {
-
-		LinearLayout fila = (LinearLayout) v.getParent();
-		TextView nombre = (TextView) fila.getChildAt(0);
-		Toast t = Toast.makeText(v.getContext(), nombre.getText(),
-				Toast.LENGTH_SHORT);
-		t.show();
+		return categoria;
 
 	}
 
-	public void lista(int idCategoria) {
+	public void insertarTitulo(final String categoria, ViewGroup vg) {
 
-		//Namespace del web service y metodo a consultar
+		String s = "titulo" + categoria;
+		int id = vg.getContext().getResources()
+				.getIdentifier(s, "id", vg.getContext().getPackageName());
+		// Log.e("//*", id + "");
+
+		final TextView text = (TextView) vg.findViewById(id);
+
+		this.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				text.setText(categoria);
+
+			}
+		});
+
+	}
+
+	public List<Map<String, String>> lista(String categoria) {
+
+		// Namespace del web service y metodo a consultar
 		String accionSoap = "ServicioWeb/lista";
 		String Metodo = "lista";
-		//Construir el id de la vista de lista con el idCategoria pasada como paramentro
-		String s = "listView" + idCategoria;
-		// Con idCategoria=1 , se carga en la listView1, los datos de categoria=1
-		int id = getResources().getIdentifier(s, "id", getPackageName());
+		
+		// Lista de maps que contendran los valores mostrados en cada fila
+					// de la lista
+		List<Map<String, String>> mylist = new ArrayList<Map<String, String>>();
 
 		try {
-			// Obtenemos la vista de la lista apropiada
-			final ListView list = (ListView) findViewById(id);
 
 			// Modelo de la petición al Web Service
 			SoapObject request = new SoapObject(namespace, Metodo);
 			// Parámetro pasado al método del Web Service
-			request.addProperty("categoria", idCategoria);
+			request.addProperty("categoria", categoria);
 
 			// Modelo el Sobre
 			SoapSerializationEnvelope sobre = new SoapSerializationEnvelope(
@@ -162,8 +153,9 @@ public class ListaActivity extends Activity {
 			// Resultado de la funcion del WebService
 			SoapObject data = (SoapObject) sobre.getResponse();
 
-			//Lista de maps que contendran los valores mostrados en cada fila de la lista
-			List<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
+			// Lista de maps que contendran los valores mostrados en cada fila
+			// de la lista
+
 			for (int i = 0; i < data.getPropertyCount(); i++) {
 
 				SoapObject sdd = (SoapObject) data.getProperty(i);
@@ -181,19 +173,7 @@ public class ListaActivity extends Activity {
 
 				mylist.add(map);
 			}
-
-			final SimpleAdapter mSchedule = new SimpleAdapter(this, mylist,
-					R.layout.fila, new String[] { "Nombre", "Precio" },
-					new int[] { R.id.column1, R.id.column2 });
-
-			this.runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					list.setAdapter(mSchedule);
-
-				}
-			});
+			
 
 		} catch (XmlPullParserException e) {
 
@@ -202,14 +182,44 @@ public class ListaActivity extends Activity {
 		} catch (SoapFault e) {
 
 			Log.e("alberto", e.getMessage());
-		}
-		// try {
 
-		catch (IOException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
 			Log.e("alberto", e.toString());
 		}
+
+		return mylist;
+	}
+
+	public void insertaLista(String categoria, List<Map<String, String>> lista,
+			ViewGroup vg) {
+
+		// Construir el id de la vista de lista con el idCategoria pasada como
+		// paramentro
+		String s = "lista" + categoria;
+		// Con idCategoria=1 , se carga en la listView1, los datos de
+		// categoria=1
+		// int id = getResources().getIdentifier(s, "id", getPackageName());
+		int id = vg.getContext().getResources()
+				.getIdentifier(s, "id", vg.getContext().getPackageName());
+
+		// Obtenemos la vista de la lista apropiada
+		final ListView list = (ListView) vg.findViewById(id);
+
+		final SimpleAdapter mSchedule = new SimpleAdapter(vg.getContext(),
+				lista, R.layout.fila, new String[] { "Nombre", "Precio" },
+				new int[] { R.id.column1, R.id.column2 });
+
+		this.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				list.setAdapter(mSchedule);
+
+			}
+		});
 
 	}
 
@@ -221,11 +231,11 @@ public class ListaActivity extends Activity {
 		protected Void doInBackground(Void... params) {
 			Log.i(TAG, "doInBackground");
 
-			titulo(1);
-			lista(1);
+			// titulo(1);
+			// lista(1);
 
-			titulo(2);
-			lista(2);
+			// titulo(2);
+			// lista(2);
 
 			return null;
 
