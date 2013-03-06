@@ -115,18 +115,6 @@
                 android:background="@color/Black"
                 android:src="@android:drawable/divider_horizontal_bright"
                 android:visibility="gone" />
-
-            <TableRow
-                android:id="@+id/tableRow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-            </TableRow>
         </TableLayout>
     </LinearLayout>
 

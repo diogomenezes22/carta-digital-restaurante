@@ -21,13 +21,12 @@ import java.util.Map;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import fragments.FragmentoComandas;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -76,27 +75,13 @@ public class ScreenSlideActivity extends FragmentActivity {
         m=new HashMap<String, PrecioUnds>();
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
       //Set the pager with an adapter
 
         //Bind the title indicator to the adapter
         TitlePageIndicator titleIndicator = (TitlePageIndicator)findViewById(R.id.titles);
         titleIndicator.setViewPager(mPager);     
-        
-      /*  SimpleOnPageChangeListener listener=new ViewPager.SimpleOnPageChangeListener() {
-                 	
-			@Override
-            public void onPageSelected(int position) {
-                // When changing pages, reset the action bar actions since they are dependent
-                // on which page is currently active. An alternative approach is to have each
-                // fragment expose actions itself (rather than the activity exposing actions),
-                // but for simplicity, the activity provides the actions in this sample.
-                invalidateOptionsMenu();                
-                Log.i("alberto", position+"");
-            }
-        };*/
-       // mPager.setOnPageChangeListener(listener);
    
     }
 
@@ -148,7 +133,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 		TextView nombre = (TextView) fila.getChildAt(0);
 		TextView precio = (TextView) fila.getChildAt(2);
 		Toast t = Toast.makeText(v.getContext(), nombre.getText(),
-				Toast.LENGTH_SHORT);
+				1000);
 		t.show();
 		
 		if(!m.containsKey(nombre.getText())){
@@ -162,14 +147,19 @@ public class ScreenSlideActivity extends FragmentActivity {
 			
 		}
 
-		FragmentoComandas.setPlatos(m);		
-		
 		if(mPager.getCurrentItem()==2){
-
-		//	FragmentoComandas f=(FragmentoComandas)getSupportFragmentManager().findFragmentById(R.id.Comanda);
-		//	f.muestraPlatos();
+						
+			FragmentoComandas f=(FragmentoComandas)getSupportFragmentManager().findFragmentByTag("Comanda");
+			f.limpiaPlatos();
+			FragmentoComandas.setPlatos(m);
+			f.muestraPlatos();
+		
+		}else{
+			
+			FragmentoComandas.setPlatos(m);
 		
 		}
+		
 	}
     
  
@@ -184,8 +174,8 @@ public class ScreenSlideActivity extends FragmentActivity {
 
     	
     	
-    	public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
+    	public ScreenSlidePagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
         }
 
     	@Override

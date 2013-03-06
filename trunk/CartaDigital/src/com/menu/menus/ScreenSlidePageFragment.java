@@ -17,14 +17,13 @@
 package com.menu.menus;
 
 import java.util.HashMap;
-
 import fragments.FragmentoComandas;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.net.NetworkInfo.DetailedState;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,6 +84,7 @@ public class ScreenSlidePageFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPageNumber = getArguments().getInt(ARG_PAGE);
+		
 	}
 
 	@Override
@@ -119,6 +119,14 @@ public class ScreenSlidePageFragment extends Fragment {
 											
 				rootView = (ViewGroup) inflater.inflate(R.layout.vista_comanda_ops,
 						container, false);	
+				
+				FragmentoComandas mMapFragment = new FragmentoComandas();
+
+			    // Then we add it using a FragmentTransaction.
+			    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+			    fragmentTransaction.add(R.id.layoutFragment, mMapFragment, "Comanda");
+			    fragmentTransaction.addToBackStack(null);
+			    fragmentTransaction.commit();
 				
 			}
 			
@@ -188,12 +196,6 @@ public class ScreenSlidePageFragment extends Fragment {
 	}
 
 	
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
-		super.onSaveInstanceState(outState);
-	}
-
 	/**
 	 * Returns the page number represented by this fragment object.
 	 */
