@@ -2,11 +2,8 @@ package fragments;
 
 import java.util.List;
 import java.util.Map;
-
 import com.menu.menus.ListaActivity;
 import com.menu.menus.R;
-import com.menu.menus.R.layout;
-
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -38,6 +35,7 @@ public class FragmentoBebidas extends Fragment{
 		la.insertaLista("Bebidas", lista, rootView);
 		
         return rootView;
+        
     }
 	
 	
