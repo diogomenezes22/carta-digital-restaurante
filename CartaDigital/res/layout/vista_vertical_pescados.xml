@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <fragment
-        android:name="fragments.FragmentoPescados"
+        android:name="fragments.FragmentoPescado"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
