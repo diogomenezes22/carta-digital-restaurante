@@ -149,7 +149,6 @@ public class FragmentoComanda extends Fragment {
 		// El formato recibido es (##.##) y formatea para mostrar siempre 2
 		// decimales y reemplazar el . por , (formatea en formato de la region) añade el simbolo del euro
 		String precioFormato = dosdec.format(Double.valueOf(precio.toString()));
-		System.out.println(precio.toString() +" "+ Double.valueOf(precio.toString()));
 		TextView prec = (TextView) filaClonada.findViewById(R.id.textView2precio);
 		prec.setText(precioFormato + "\u20AC");
 
