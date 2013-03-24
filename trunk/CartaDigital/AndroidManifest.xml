@@ -3,11 +3,13 @@
     package="com.menu.menus"
     android:versionCode="1"
     android:versionName="1.0" >
-	<uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="15" />
-	
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -26,16 +28,20 @@
             android:name="com.menu.menus.ListaActivity"
             android:label="@string/title_activity_lista" >
         </activity>
-		<activity
-            android:name="fragmentsActivity.FragmentActivityBebidasVinos"
-           >
+        <activity android:name="fragmentsActivity.FragmentActivityBebidasVinos" >
         </activity>
-        <activity android:name=".ScreenSlideActivity"
+        <activity
+            android:name="com.menu.menus.ScreenSlideActivity"
             android:label="@string/title_activity_lista"
-            android:uiOptions="splitActionBarWhenNarrow">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
+            android:uiOptions="splitActionBarWhenNarrow" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity
+            android:name="com.menu.menus.FragmentoTwitter"
+            android:label="@string/title_activity_fragmento_twitter" >
+        </activity>
     </application>
-	
+
 </manifest>
