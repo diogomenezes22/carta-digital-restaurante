@@ -1,6 +1,7 @@
 package com.menu.menus;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,6 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,23 +23,20 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 
-public class ListaActivity extends Activity {
+public class ListaActivity extends Activity{
 
+	// Namespace + nombre de metodo 
 	private String accionSoap;
 	private String metodo;
+	// Nombre del espacio del Web Service
 	private static final String namespace = "ServicioWeb";
-	private static final String url = "http://192.168.1.35:8080/WebService1.asmx";
-
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-	}
+	// Direccion del Web Sevice
+	private static final String url = "http://192.168.1.36:8080/WebService1.asmx";
 
 	
 	public String titulo(int idCategoria) {
-
+		
+		// Namespace + nombre de metodo 
 		accionSoap = "ServicioWeb/titulo";
 		metodo = "titulo";
 		String categoria = null;
@@ -110,7 +107,7 @@ public class ListaActivity extends Activity {
 
 		// Namespace del web service y metodo a consultar
 		accionSoap = "ServicioWeb/lista";
-		metodo = "lista";
+		metodo = "lista";	
 		
 		// Lista de maps que contendran los valores mostrados en cada fila
 					// de la lista
@@ -140,26 +137,39 @@ public class ListaActivity extends Activity {
 
 			// Lista de maps que contendran los valores mostrados en cada fila
 			// de la lista
-
 			for (int i = 0; i < data.getPropertyCount(); i++) {
 
 				SoapObject sdd = (SoapObject) data.getProperty(i);
-
+				
 				HashMap<String, String> map = new HashMap<String, String>();
+				
+				//Recoge los datos de BD y los mete como parametros en pares en un map
 				for (int j = 0; j < sdd.getPropertyCount(); j++) {
 
 					if (j == 0) {
+						
 						map.put("Nombre", sdd.getProperty(j).toString());
+						
 					} else {
-						map.put("Precio", sdd.getProperty(j).toString()
-								+ "\u20AC");
+						
+						// Crea el formato de dos decimales para aplicarlo al mostrar el precio
+						DecimalFormat dosdec=new DecimalFormat();
+						dosdec.setMinimumFractionDigits(2);
+						
+						// Obtiene el dato de la bd (##,##) reemplaza la , por . convierte el dato a Double 
+						// y formatea el numero para mostrar siempre 2 decimales
+						String precioFormateado=dosdec.format(Double.valueOf(sdd.getProperty(j).toString().replace(",", "."))) +"\u20AC";						
+						map.put("Precio", precioFormateado);
+						
 					}
+					
 				}
-
+				
+				map.put("Categoria", categoria);
 				mylist.add(map);
+				
 			}
 			
-
 		} catch (XmlPullParserException e) {
 
 			Log.e("alberto", e.getMessage());
@@ -180,7 +190,7 @@ public class ListaActivity extends Activity {
 	
 	// Muestra la lista obtenida obtenida en el metodo anterior en la vista pasada
 	public void insertaLista(String categoria, List<Map<String, String>> lista,
-			ViewGroup vg) {
+			ViewGroup vista) {
 
 		// Construir el id de la vista de lista con el idCategoria pasada como
 		// paramentro
@@ -188,23 +198,23 @@ public class ListaActivity extends Activity {
 	
 		
 		// int id = getResources().getIdentifier(s, "id", getPackageName());
-		int id = vg.getContext().getResources()
-				.getIdentifier(s, "id", vg.getContext().getPackageName());
+		int id = vista.getContext().getResources()
+				.getIdentifier(s, "id", vista.getContext().getPackageName());
 
 		// Obtiene la vista de la lista apropiada
-		final ListView list = (ListView) vg.findViewById(id);
+		final ListView vistaLista = (ListView) vista.findViewById(id);
 
-		// Crea adapter enlazando campos de vista y lista de maps
-		final SimpleAdapter mSchedule = new SimpleAdapter(vg.getContext(),
-				lista, R.layout.fila, new String[] { "Nombre", "Precio" },
-				new int[] { R.id.column1, R.id.column2 });
+		// Crea adapter enlazando vistas con sus campos 
+		final SimpleAdapter mSchedule = new SimpleAdapter(vista.getContext(),
+				lista, R.layout.fila_carta, new String[] { "Nombre", "Precio", "Categoria" },
+				new int[] { R.id.column1, R.id.column2, R.id.Categoria });
 
 		this.runOnUiThread(new Runnable() {
 
 			@Override
 			public void run() {
 
-				list.setAdapter(mSchedule);
+				vistaLista.setAdapter(mSchedule);
 
 			}
 		});

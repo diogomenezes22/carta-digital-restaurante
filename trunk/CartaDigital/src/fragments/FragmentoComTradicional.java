@@ -18,21 +18,23 @@ public class FragmentoComTradicional extends Fragment{
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 		
+		// Permite acceso a entrada salida en Thread
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 		.permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 		
-		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.vista_com_tradicional,
+		// Inflate the layout for this fragment
+		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.vista_fragment_com_tradicional,
 				container, false);
 		ListaActivity la = new ListaActivity();
 		
-		// Titulo
+		// Mostrar Titulo
 		la.insertarTitulo("Tradicional", rootView);
 				
-		// Lista
+		// Obtener lista y mostrar
 		List<Map<String, String>> lista=la.lista("Tradicional");
+		// Recoge vista de lista en rootView y la completa con lista de consulta
 		la.insertaLista("Tradicional", lista, rootView);
 		
         return rootView;

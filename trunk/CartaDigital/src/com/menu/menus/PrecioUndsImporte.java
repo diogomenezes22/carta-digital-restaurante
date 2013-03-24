@@ -42,15 +42,12 @@ public class PrecioUndsImporte {
 	public void setImporte(Double importe) {
 		this.importe = importe;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "PrecioUndsImporte [precio=" + precio + ", unds=" + unds
+				+ ", importe=" + importe + "]";
+	}
 	
 	
 	
