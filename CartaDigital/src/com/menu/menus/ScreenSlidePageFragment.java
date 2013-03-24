@@ -23,7 +23,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import fragments.FragmentoComandas;
+import fragments.FragmentoComanda;
+import fragments.FragmentoTwitter;
 
 /**
  * A fragment representing a single step in a wizard. The fragment shows a dummy
@@ -47,14 +48,22 @@ public class ScreenSlidePageFragment extends Fragment {
 	private int mPageNumber;
 	private HashMap<String, String> curGroupMap1;
 	private ViewGroup rootView;
+	private static ViewGroup optsView;
 
 	// private static boolean anteriorVertical=true;
+
+	public static ViewGroup getOptsView() {
+		return optsView;
+	}
+
+	public static String getArgPage() {
+		return ARG_PAGE;
+	}
 
 	public HashMap<String, String> getCurGroupMap1() {
 		return curGroupMap1;
 	}
 
-	
 	public void setCurGroupMap1(HashMap<String, String> curGroupMap1) {
 		this.curGroupMap1 = curGroupMap1;
 	}
@@ -72,11 +81,9 @@ public class ScreenSlidePageFragment extends Fragment {
 		return fragment;
 	}
 
-	
 	public ScreenSlidePageFragment() {
 	}
 
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,39 +101,54 @@ public class ScreenSlidePageFragment extends Fragment {
 		if (mPageNumber == 0) {
 
 			rootView = (ViewGroup) inflater.inflate(
-					R.layout.vista_bebidas_vinos, container, false);
+					R.layout.vista_horizontal_bebidas_vinos, container, false);
 
 		}
 
 		if (mPageNumber == 1) {
 
 			rootView = (ViewGroup) inflater.inflate(
-					R.layout.vista_entrantes_com_tradicional, container, false);
+					R.layout.vista_horizontal_entrantes_com_tradicional, container, false);
 
 		}
 
 		if (mPageNumber == 2) {
 
 			rootView = (ViewGroup) inflater.inflate(
-					R.layout.vista_pescados_carnes, container, false);
+					R.layout.vista_horizontal_pescados_carnes, container, false);
 
 		}
 
 		if (mPageNumber == 3) {
 
-			rootView = (ViewGroup) inflater.inflate(R.layout.vista_comanda_ops,
+			rootView = (ViewGroup) inflater.inflate(R.layout.vista_horizontal_comanda_ops,
 					container, false);
-
+			optsView = rootView;
+			
 			// Crea nuevo FragmentoComandas
-			FragmentoComandas mMapFragment = new FragmentoComandas();
+			FragmentoComanda mMapFragment = new FragmentoComanda();
 
-			// Añade el fragmento de manera dinamica para evitar el duplicado de tag en la vuelta a cargar
+			// Añade el fragmento de manera dinamica para evitar el duplicado de
+			// tag en la vuelta a cargar
 			FragmentTransaction fragmentTransaction = getFragmentManager()
 					.beginTransaction();
 			fragmentTransaction.add(R.id.layoutFragment, mMapFragment,
 					"Comanda");
 			fragmentTransaction.addToBackStack(null);
 			fragmentTransaction.commit();
+
+			
+			FragmentoTwitter fragmentTwitter = new FragmentoTwitter();
+
+			// Añade el fragmento de manera dinamica para evitar el duplicado de
+			// tag en la vuelta a cargar. necesario para finalizar Thread de tweets
+			// al destruir pagina 3. (ScreenSlideActivity)
+			FragmentTransaction fragmentTrans = getFragmentManager()
+					.beginTransaction();
+			fragmentTrans.add(R.id.Opciones, fragmentTwitter,
+					"Opciones");
+			fragmentTrans.addToBackStack(null);
+			fragmentTrans.commit();
 
 		}
 

@@ -17,6 +17,7 @@
 package com.menu.menus;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,14 +27,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.viewpagerindicator.TitlePageIndicator;
-import fragments.FragmentoComandas;
+import fragments.FragmentoComanda;
+import fragments.FragmentoTwitter;
 
 /**
  * Demonstrates a "screen-slide" animation using a {@link ViewPager}. Because
@@ -62,8 +67,8 @@ public class ScreenSlideActivity extends FragmentActivity {
 	 */
 	private ViewPager mPager;
 	
-	// Estructura de almacenamiento de platos seleccionados
-	private Map<String, PrecioUndsImporte> m;
+	// Estructura de almacenamiento de platos seleccionados Map<Categoria, Map<NombrePlato,PrecioUndsImporte>>
+	private Map< String, Map<String, PrecioUndsImporte>> m;
 	/**
 	 * The pager adapter, which provides the pages to the view pager widget.
 	 */
@@ -74,11 +79,19 @@ public class ScreenSlideActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
 		
+		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+		
 		// Instanciacion de estructura
-		m = new HashMap<String, PrecioUndsImporte>();
+		m = new LinkedHashMap<String, Map<String, PrecioUndsImporte>>();
+		m.put("Bebidas",  new HashMap<String, PrecioUndsImporte>());
+		m.put("Vinos", new HashMap<String, PrecioUndsImporte>());
+		m.put("Entrantes", new HashMap<String, PrecioUndsImporte>());
+		m.put("Tradicional", new HashMap<String, PrecioUndsImporte>());
+		m.put("Pescado", new HashMap<String, PrecioUndsImporte>());
+		m.put("Carne", new HashMap<String, PrecioUndsImporte>());
 		
 		// Carga de vista principal (TitlePager y ViewPager)
-		setContentView(R.layout.activity_screen_slide);
+		setContentView(R.layout.contenedor_pager_principal);
 		
 		// Recoge ViewPager de la vista 
 		mPager = (ViewPager) findViewById(R.id.pager);
@@ -96,7 +109,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 	}
 
 	
-	@Override
+/*	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.activity_screen_slide, menu);
@@ -118,8 +131,8 @@ public class ScreenSlideActivity extends FragmentActivity {
 		return true;
 	}
 
-	
-	@Override
+	*/
+/*	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
@@ -145,7 +158,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
 
 	
 	// Procedimiento manejador al pulsar pedir un plato (Recoge la vista del boton causante)
@@ -154,32 +167,36 @@ public class ScreenSlideActivity extends FragmentActivity {
 		// Obtiene el padre del boton, la fila del plato
 		LinearLayout fila = (LinearLayout) v.getParent();
 		
-		// Obtiene datos del plato mediante su fila
+		// Obtiene datos del plato mediante su fila y posicion
 		TextView nombre = (TextView) fila.getChildAt(0);
-		TextView precio = (TextView) fila.getChildAt(2);
+		TextView categoria = (TextView) fila.getChildAt(1);
+		TextView precio = (TextView) fila.getChildAt(3);
 		
 		// Toast que muestra la info 
-		Toast t = Toast.makeText(v.getContext(), nombre.getText(), 1000);
+		Toast t = Toast.makeText(v.getContext(), nombre.getText(), 100);
 		t.show();
 
+		
 		// Consulta si el nombre del plato esta en la estructura
-		if (!m.containsKey(nombre.getText())) {
+		if (!m.get(categoria.getText()).containsKey(nombre.getText())) {
 
 			// Si no esta, prepara los datos y los mete en la estructura
 			// Elimina el simbolo del euro en precio e importe y pone la cantidad a 1
 			PrecioUndsImporte precUndsImp = new PrecioUndsImporte(
 					Double.valueOf(precio.getText().toString()
-							.replace("\u20AC", " ").replace(",", ".")), 1,
+							// Intercambio de . por , para poder convertirlo a Double
+							.replace("\u20AC", " ").replace(",", "*").replace(".", ",").replace("*", ".")), 1,
 					Double.valueOf(precio.getText().toString()
-							.replace("\u20AC", " ").replace(",", ".")));
+							// Intercambio de . por , para poder convertirlo a Double
+							.replace("\u20AC", " ").replace(",", "*").replace(".", ",").replace("*", ".")));
 			
-			m.put(nombre.getText().toString(), precUndsImp);
-
+			m.get(categoria.getText()).put(nombre.getText().toString(), precUndsImp);
+		
 		} else {
 
 			// Si esta incrementa las unidades
-			m.get(nombre.getText().toString()).setUnds(
-					m.get(nombre.getText().toString()).getUnds() + 1);
+			m.get(categoria.getText()).get(nombre.getText()).setUnds(m.get(categoria.getText()).
+					get(nombre.getText().toString()).getUnds() + 1);			
 
 		}
 
@@ -187,20 +204,21 @@ public class ScreenSlideActivity extends FragmentActivity {
 		 * Si la pagina actual es la 2ª ya ha cargado la 3ª (pagina de comanda), la 
 		 * tiene en memoria y procede a recoger su vista y añadir el plato y mostrar los almacenados.   
 		 * Este bucle se complementa con la carga y muestra de los platos cuando se carga 
-		 * la 3ª (pagina de comanda) pagina cuya pulsacion en la pagina 2 no recoge.
+		 * la 3ª (pagina de comanda), pagina cuya pulsacion en la pagina 2 no recoge.
 		 * */
 		if (mPager.getCurrentItem() == 2) {
 
-			FragmentoComandas f = (FragmentoComandas) getSupportFragmentManager()
+			FragmentoComanda f = (FragmentoComanda) getSupportFragmentManager()
 					.findFragmentByTag("Comanda");
+						
 			f.limpiaPlatos();
-			FragmentoComandas.setPlatos(m);
+			FragmentoComanda.setPlatos(m);
 			f.muestraPlatos();
 
 		} else {
 			
 			// Si no es la pagina 2, establece la estructura de datos en el FragmentoComandas 
-			FragmentoComandas.setPlatos(m);
+			FragmentoComanda.setPlatos(m);
 
 		}
 
@@ -235,6 +253,25 @@ public class ScreenSlideActivity extends FragmentActivity {
 		}
 
 		
+		// Metodo lanzado al eliminar una pagina
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			// TODO Auto-generated method stub
+			
+			// Si la pagina eliminada de memoria es la 3(Comanda y twitter) elimina el
+			// fragmento twitter para finalizar el Thread de actualizacion
+			if(position==3){
+				
+				FragmentoTwitter fTwitter= (FragmentoTwitter) getSupportFragmentManager().findFragmentByTag("Opciones");
+				fTwitter.onDestroyView();				
+				
+			}
+			
+			super.destroyItem(container, position, object);
+		
+		}
+
+
 		@Override
 		public int getCount() {
 			return NUM_PAGES;

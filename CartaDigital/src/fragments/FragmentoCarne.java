@@ -13,27 +13,28 @@ import android.view.ViewGroup;
 import com.menu.menus.ListaActivity;
 import com.menu.menus.R;
 
-public class FragmentoPescados extends Fragment{
+public class FragmentoCarne extends Fragment{
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-		
+       
+		// Permite acceso a entrada salida en Thread
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 		.permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 		
-		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.vista_pescado,
+		// Inflate the layout for this fragment
+		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.vista_fragment_carne,
 				container, false);
 		ListaActivity la = new ListaActivity();
-		
-		// Titulo
-		la.insertarTitulo("Pescado", rootView);
+
+		// Mostrar Titulo
+		la.insertarTitulo("Carne", rootView);
 				
-		// Lista
-		List<Map<String, String>> lista=la.lista("Pescado");
-		la.insertaLista("Pescado", lista, rootView);
+		// Obtener lista y mostrar
+		List<Map<String, String>> lista=la.lista("Carne");
+		la.insertaLista("Carne", lista, rootView);
 		
         return rootView;
     }
