@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="60dp"
     android:gravity="right" >
 
     <TextView
@@ -17,21 +17,31 @@
         android:text="TextView"
         android:textSize="30sp" />
 
+    <TextView
+        android:id="@+id/Categoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="TextView"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/button1"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="62dp"
-        android:layout_height="match_parent"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:onClick="manejadorPedido"
         android:text="Pedir"
-        android:textSize="16sp" />
+        android:textSize="20sp"
+        android:typeface="normal" />
 
     <TextView
         android:id="@+id/column2"
-        android:layout_width="64dp"
+        android:layout_width="85dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="10dp"
         android:gravity="center_vertical|center_horizontal"
         android:text="TextView"
         android:textSize="21sp"
