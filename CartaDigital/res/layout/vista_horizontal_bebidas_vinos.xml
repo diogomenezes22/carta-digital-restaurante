@@ -4,16 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
-    <LinearLayout 
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <LinearLayout
         android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:baselineAligned="true"
         android:divider="@android:drawable/divider_horizontal_dim_dark"
         android:dividerPadding="1dp"
-        android:showDividers="middle"
-        tools:context=".MiFragmento" >
+        android:showDividers="middle" >
 
         <fragment
             android:name="fragments.FragmentoBebidas"
