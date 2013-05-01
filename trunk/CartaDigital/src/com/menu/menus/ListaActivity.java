@@ -31,7 +31,7 @@ public class ListaActivity extends Activity{
 	// Nombre del espacio del Web Service
 	private static final String namespace = "ServicioWeb";
 	// Direccion del Web Sevice
-	private static final String url = "http://192.168.1.36:8080/WebService1.asmx";
+	private static final String url = "http://192.168.1.34:8080/WebService1.asmx";
 
 	
 	public String titulo(int idCategoria) {

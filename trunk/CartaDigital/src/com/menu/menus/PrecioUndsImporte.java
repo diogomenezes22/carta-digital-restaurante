@@ -1,8 +1,10 @@
 package com.menu.menus;
 
+import java.io.Serializable;
+
 
 // Clase que sera objeto del map de la estructura de platos seleccionados 
-public class PrecioUndsImporte {
+public class PrecioUndsImporte implements Serializable{
 
 	
 	private Double precio;
@@ -10,6 +12,7 @@ public class PrecioUndsImporte {
 	private Double importe;
 	
 	
+	// Constructor de la clase
 	public PrecioUndsImporte(Double precio, Integer unds, Double importe){
 		
 		this.precio=precio;
