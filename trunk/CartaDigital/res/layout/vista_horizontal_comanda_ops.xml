@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content" >
 
                     <TextView
-                        android:id="@+id/textView1"
+                        android:id="@+id/fModificacion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -79,7 +79,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.28"
                 android:background="@color/DarkOliveGreen"
+                android:onClick="marchaComanda"
                 android:text="Marchar" />
+
         </LinearLayout>
     </LinearLayout>
 

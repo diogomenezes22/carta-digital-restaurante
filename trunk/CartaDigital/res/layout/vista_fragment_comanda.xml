@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/gradiente" >
 
     <ScrollView
         android:layout_width="700dp"
         android:layout_height="match_parent"
-        android:overScrollMode="always"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:scrollbarStyle="outsideInset" >
+        android:scrollbarAlwaysDrawVerticalTrack="true" >
 
         <LinearLayout
             android:id="@+id/comandaLayout"
             android:layout_width="700dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:scrollbarStyle="outsideOverlay" >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
                 android:orientation="vertical" >
 
                 <TableLayout
@@ -39,6 +37,7 @@
                             android:id="@+id/Cantidad"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="6dp"
                             android:text="Cant"
                             android:textSize="23sp" />
@@ -55,7 +54,7 @@
                             android:id="@+id/Precio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
+                            android:layout_marginLeft="3dp"
                             android:text="Precio"
                             android:textSize="23sp" />
 
@@ -63,9 +62,11 @@
                             android:id="@+id/Total"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="75dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="8dp"
                             android:text="Total"
                             android:textSize="23sp" />
+
                     </TableRow>
 
                     <ImageView
@@ -88,7 +89,7 @@
                             android:id="@+id/textView2cant"
                             android:layout_width="10dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="6dp"
                             android:text="1"
                             android:textSize="25sp" />
@@ -98,27 +99,42 @@
                             android:layout_width="270dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="0dp"
+                            android:layout_marginLeft="10dp"
                             android:text="Baron ladron de Guevara"
                             android:textSize="28sp" />
 
                         <TextView
                             android:id="@+id/textView2precio"
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center_vertical"
-                            android:layout_marginLeft="-3dp"
-                            android:text="1045"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="-7dp"
+                            android:text="500,00€"
                             android:textSize="25sp" />
 
                         <TextView
                             android:id="@+id/textView2total"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="15dp"
+                            android:text="1.250,51€"
+                            android:textSize="25sp" />
+
+                        <ImageView
+                            android:id="@+id/imageView3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center_vertical"
-                            android:layout_marginLeft="27dp"
-                            android:text="100.24"
-                            android:textSize="25sp" />
+                            android:onClick="eliminaPlato"
+                            android:src="@android:drawable/ic_delete" />
+
+                        <TextView
+                            android:id="@+id/textView2categoria"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="TextView"
+                            android:visibility="gone" />
+
                     </TableRow>
 
                     <ImageView
@@ -132,5 +148,33 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/fModificacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/hora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/nPlatos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/importe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="gone" />
 
 </LinearLayout>
