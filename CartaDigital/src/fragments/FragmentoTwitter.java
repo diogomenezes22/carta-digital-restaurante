@@ -1,5 +1,6 @@
 package fragments;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.List;
 
 import twitter4j.Query;
@@ -15,6 +16,7 @@ import com.menu.menus.R;
 import android.R.string;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -33,7 +35,18 @@ public class FragmentoTwitter extends Fragment {
 	private ViewGroup rootView;
 	// Centinela para finalizacion de Thread
 	private boolean continuar = true;
+	Handler h=new Handler(){
 
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			//super.handleMessage(msg);
+			onDestroyView();
+						
+		}
+
+	};
+	
 	// Thread de carga de tweets
 	Thread fmTicker = new Thread() {
 
@@ -70,20 +83,6 @@ public class FragmentoTwitter extends Fragment {
 				// Al eliminar la vista finalizara el Thread 
 				while (continuar) {
 
-					// A partir del 3º tweet espera 5s para cargar 
-					if (i >= 3) {
-
-						try {
-
-							sleep(5000);
-
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-					}
-
 					//
 					final int j = i;
 					
@@ -100,6 +99,22 @@ public class FragmentoTwitter extends Fragment {
 
 					});
 
+					
+					// A partir del 3º tweet espera 5s para cargar 
+					if (i >= 2) {
+
+						try {
+
+							sleep(5000);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+					
+					
 					i++;
 					
 					// Muestra 15 mensajes
@@ -115,6 +130,8 @@ public class FragmentoTwitter extends Fragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			h.sendEmptyMessage(0);
 		}
 
 	};
@@ -130,7 +147,7 @@ public class FragmentoTwitter extends Fragment {
 
 		// Lanza el Thread de carga y actualizacion de tweets
 		fmTicker.start();
-
+		
 		return rootView;
 
 	}
@@ -170,7 +187,15 @@ public class FragmentoTwitter extends Fragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		continuar = false;
+		
 	}
+	
+	
+	public void terminar(){
+		
+		continuar = false;
+
+	}
+	
 
 }
