@@ -1,0 +1,1 @@
+Implementación de sistema de información a restaurante, mediante carta digital y centralización y estandarización de procesos
